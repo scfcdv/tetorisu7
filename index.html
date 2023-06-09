@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
 <head>
-<meta charset="UTF-8" />
 <title>テトリス</title>
 <link rel="icon" href="favicon.ico">
 <style>
@@ -35,6 +32,7 @@ margin: 0 auto;}
 <canvas id="cvs"></canvas>
 </div>
 <script>
+var sp = 0;
 var count = 0;
 var id = setInterval(function(){
 count++;
@@ -200,6 +198,7 @@ for (let x = 0; x < tetSize; x++) {
 newTet[y][x] = tet[tetSize - 1 - x][y];}}
 return newTet;};
 document.onkeydown = (e) => {
+if(sp === 0){
 if (isGameOver) return;
 switch (e.keyCode) {
 case 37: //左
@@ -214,7 +213,7 @@ break;
 case 38: //space
 let newTet = createRotateTet();
 if (canMove(0, 0, newTet)) {
-tet = newTet;}}
+tet = newTet;}}}
 draw();};
 //動きが止まったtetをボード座標に書き写す
 const fixTet = () => {
@@ -247,7 +246,8 @@ if (isGameOver) return;
 //下に行けたら
 if (canMove(0, 1)) {
 //下に行く
-offsetY++;
+if(sp === 0){
+offsetY++;}
 } else {
 //行けなかったら固定する
 fixTet();
@@ -286,9 +286,16 @@ initStartPos();
 timerId=setInterval(dropTet,speed);
 draw();};
 </script>
+<script>
+document.addEventListener('keydown', function(event) {
+if (event.keyCode === 13) {
+if(sp === 0)
+sp = 1;
+else{sp=0}
+}});
+</script>
 <h1 class="gd-menu">score</h1>
 <h1 class="gd-menu2" id="cup">0</h1>
 <h1 class="gd-menu3">経過時間</h1>
 <h1 class="gd-menu4" id="timer">0</h1>
 </body>
-</html>
